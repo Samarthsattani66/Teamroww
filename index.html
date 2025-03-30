@@ -56,7 +56,7 @@
             player.configure({
                 drm: {
                     clearKeys: {
-                              "6016f23a660b6428d767758b52e54a72": "df006c09745771c9d820f79c667f5a8b"
+                        "6016f23a660b6428d767758b52e54a72": "df006c09745771c9d820f79c667f5a8b"
                     }
                 }
             });
@@ -81,8 +81,8 @@
             controls.addEventListener("error", onUIErrorEvent);
 
             try {
-                await player.load("https://a179aivottepl-a.akamaihd.net/lhr-nitro/live/clients/dash/enc/ll8ogw2giu/out/v1/0a60e89eae5a4d92ab556fa559f4c5cd/cenc.mpd
-");
+                // Corrected URL without line break
+                await player.load("https://a179aivottepl-a.akamaihd.net/lhr-nitro/live/clients/dash/enc/ll8ogw2giu/out/v1/0a60e89eae5a4d92ab556fa559f4c5cd/cenc.mpd");
                 console.log("The video has now been loaded!");
             } catch (error) {
                 onPlayerError(error);
@@ -111,7 +111,8 @@
 
         document.addEventListener("shaka-ui-loaded", init);
         document.addEventListener("shaka-ui-load-failed", initFailed);
-      // Telegram prompt
+
+        // Telegram prompt
         const message = "JOIN OUR TELEGRAM CHANNEL FOR MORE LIVE STREAM LINKS";
         if (confirm(message)) {
             window.location.href = "https://t.me/+e6G48oujQuExOTg1";
