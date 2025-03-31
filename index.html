@@ -56,7 +56,7 @@
             player.configure({
                 drm: {
                     clearKeys: {
-                        "cc153ec885a0e57697939142cd1bcea7":"b19ad1ce9bef24511c22f403adf7f61e"
+                        "cc153ec885a0e57697939142cd1bcea7": "b19ad1ce9bef24511c22f403adf7f61e"
                     }
                 }
             });
@@ -81,9 +81,8 @@
             controls.addEventListener("error", onUIErrorEvent);
 
             try {
-                // Corrected URL without line break
-                await player.load("https://aba72ykaaaaaaaamohrx4tcd2w6ml.b3b8744990604286a134fa727967d0bd.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/gp5sdzsk3h/out/v1/9e91d5f5a95e4942a41d81bd015d2bdf/cenc.mpd
-                                  ");
+                // Correct URL without line break
+                await player.load("https://aba72ykaaaaaaaamohrx4tcd2w6ml.b3b8744990604286a134fa727967d0bd.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/gp5sdzsk3h/out/v1/9e91d5f5a95e4942a41d81bd015d2bdf/cenc.mpd");
                 console.log("The video has now been loaded!");
             } catch (error) {
                 onPlayerError(error);
