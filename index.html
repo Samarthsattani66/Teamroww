@@ -97,7 +97,7 @@
         }
 
         function onPlayerError(error) {
-            console.error("Error code:", error.code, "Object:", error);
+            console.error("Shaka Player Error: ", error.code, error.message, error);
             alert("An error occurred while loading the video.");
         }
 
