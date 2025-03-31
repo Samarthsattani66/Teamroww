@@ -62,6 +62,7 @@
             window.ui = ui;
 
             player.addEventListener("error", onPlayerErrorEvent);
+            player.addEventListener("buffering", onBufferingEvent); // Added buffering event
 
             // Optional: Configure DRM (adjust this if necessary)
             player.configure({
@@ -99,6 +100,15 @@
         function onPlayerError(error) {
             console.error("Shaka Player Error: ", error.code, error.message, error);
             alert("An error occurred while loading the video.");
+        }
+
+        // Handle buffering event (add extra logging)
+        function onBufferingEvent(event) {
+            if (event.buffering) {
+                console.log("Buffering video...");
+            } else {
+                console.log("Video has resumed playback.");
+            }
         }
 
         // Handle Telegram prompt
