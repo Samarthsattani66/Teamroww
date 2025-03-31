@@ -61,10 +61,11 @@
             window.player = player;
             window.ui = ui;
 
+            // Error handling for player
             player.addEventListener("error", onPlayerErrorEvent);
             player.addEventListener("buffering", onBufferingEvent); // Added buffering event
 
-            // Optional: Configure DRM (adjust this if necessary)
+            // Configure player with streaming options
             player.configure({
                 drm: {
                     clearKeys: {
@@ -72,27 +73,28 @@
                     }
                 },
                 streaming: {
-                    bufferingGoal: 30,  // Buffer for 30 seconds
-                    rebufferingGoal: 15,  // Rebuffering threshold
-                    liveShift: 0,  // This tells Shaka Player that it's a live stream
+                    bufferingGoal: 30,  // Buffer for 30 seconds before starting playback
+                    rebufferingGoal: 15,  // Threshold for rebuffering before pausing
+                    liveShift: 0,  // Set for live stream
                     retryParameters: {
-                        maxAttempts: 3,  // Try 3 times before failing
-                        baseDelay: 2,  // Start with 2 seconds before retry
-                        backoffFactor: 2,  // Increase retry time by a factor of 2
+                        maxAttempts: 3,  // Retry up to 3 times
+                        baseDelay: 2,  // Retry after 2 seconds
+                        backoffFactor: 2,  // Delay increase factor
                     }
                 }
             });
 
             try {
-                // Load your live stream URL
+                // Load the stream URL
                 await player.load("https://aba72ykaaaaaaaamohrx4tcd2w6ml.b3b8744990604286a134fa727967d0bd.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/gp5sdzsk3h/out/v1/9e91d5f5a95e4942a41d81bd015d2bdf/cenc.mpd");
                 console.log("The live video has now been loaded!");
             } catch (error) {
-                onPlayerError(error);  // Handle player error
+                // If an error occurs, show an alert and log it
+                onPlayerError(error); 
             }
         }
 
-        // Handle player errors
+        // Error handler for player
         function onPlayerErrorEvent(event) {
             onPlayerError(event.detail);
         }
@@ -102,7 +104,7 @@
             alert("An error occurred while loading the video.");
         }
 
-        // Handle buffering event (add extra logging)
+        // Buffering event handler
         function onBufferingEvent(event) {
             if (event.buffering) {
                 console.log("Buffering video...");
@@ -111,15 +113,16 @@
             }
         }
 
-        // Handle Telegram prompt
+        // Show Telegram prompt
         const message = "JOIN OUR TELEGRAM CHANNEL FOR MORE LIVE STREAM LINKS";
         if (confirm(message)) {
             window.location.href = "https://t.me/+e6G48oujQuExOTg1";
         }
 
-        // Wait for Shaka UI to load
+        // Initialize player when Shaka UI is loaded
         document.addEventListener("shaka-ui-loaded", init);
         document.addEventListener("shaka-ui-load-failed", () => console.error("Shaka UI load failed"));
+
     </script>
 </body>
 </html>
