@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEAMROHITOFFICAL45_LIVE</title>
     <link rel="icon" href="https://i.postimg.cc/prMQRWMR/skfav.png" type="image/png" sizes="250x250">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.1/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.1/controls.min.css" crossorigin="anonymous">
     <style>
@@ -48,79 +49,67 @@
 
     <script>
         async function init() {
-            let video = document.getElementById("video");
-            const player = new shaka.Player(video); // Initialize player properly
+            const video = document.getElementById("video");
+            const player = new shaka.Player(video);  // Initialize Shaka Player
 
-            // Create UI
+            // Create and configure the Shaka UI controls
             const ui = new shaka.ui.Controls(video, player);
-            const controls = ui.getControls();
+            ui.configure({
+                controlPanelElements: ["play_pause", "mute", "volume", "spacer", "time_and_duration", "quality", "fullscreen", "overflow_menu"],
+            });
 
-            // Optional: Configure DRM (remove if not needed)
+            window.player = player;
+            window.ui = ui;
+
+            player.addEventListener("error", onPlayerErrorEvent);
+
+            // Optional: Configure DRM (adjust this if necessary)
             player.configure({
                 drm: {
                     clearKeys: {
                         "cc153ec885a0e57697939142cd1bcea7": "b19ad1ce9bef24511c22f403adf7f61e"
                     }
-                }
-            });
-
-            // Configure UI controls
-            ui.configure({
-                controlPanelElements: ["play_pause", "mute", "volume", "spacer", "time_and_duration", "quality", "fullscreen", "overflow_menu"],
-                volumeBarColors: {
-                    base: 'rgba(63, 187, 1, 1)',
-                    level: 'rgb(255, 69, 0)'
                 },
-                seekBarColors: {
-                    base: 'rgb(41, 41, 163)',
-                    buffered: 'rgb(35, 99, 3)',
-                    played: 'rgba(63, 187, 1, 1)'
+                streaming: {
+                    bufferingGoal: 30,  // Buffer for 30 seconds
+                    rebufferingGoal: 15,  // Rebuffering threshold
+                    liveShift: 0,  // This tells Shaka Player that it's a live stream
+                    retryParameters: {
+                        maxAttempts: 3,  // Try 3 times before failing
+                        baseDelay: 2,  // Start with 2 seconds before retry
+                        backoffFactor: 2,  // Increase retry time by a factor of 2
+                    }
                 }
             });
-
-            // Set global references
-            window.player = player;
-            window.ui = ui;
-
-            // Event listeners for errors
-            player.addEventListener("error", onPlayerErrorEvent);
-            controls.addEventListener("error", onUIErrorEvent);
 
             try {
-                // Correct URL (no newline)
+                // Load your live stream URL
                 await player.load("https://aba72ykaaaaaaaamohrx4tcd2w6ml.b3b8744990604286a134fa727967d0bd.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/gp5sdzsk3h/out/v1/9e91d5f5a95e4942a41d81bd015d2bdf/cenc.mpd");
-                console.log("The video has now been loaded!");
+                console.log("The live video has now been loaded!");
             } catch (error) {
-                onPlayerError(error);
+                onPlayerError(error);  // Handle player error
             }
         }
 
+        // Handle player errors
         function onPlayerErrorEvent(event) {
             onPlayerError(event.detail);
         }
 
         function onPlayerError(error) {
-            console.error("Error code", error.code, "object", error);
+            console.error("Error code:", error.code, "Object:", error);
             alert("An error occurred while loading the video.");
         }
 
-        function onUIErrorEvent(event) {
-            onPlayerError(event.detail);
-        }
-
-        function initFailed(error) {
-            console.error("Unable to load the UI library!");
-        }
-
-        // Telegram prompt
+        // Handle Telegram prompt
         const message = "JOIN OUR TELEGRAM CHANNEL FOR MORE LIVE STREAM LINKS";
         if (confirm(message)) {
             window.location.href = "https://t.me/+e6G48oujQuExOTg1";
         }
 
-        // Event listeners for Shaka UI loading
+        // Wait for Shaka UI to load
         document.addEventListener("shaka-ui-loaded", init);
-        document.addEventListener("shaka-ui-load-failed", initFailed);
+        document.addEventListener("shaka-ui-load-failed", () => console.error("Shaka UI load failed"));
     </script>
 </body>
 </html>
