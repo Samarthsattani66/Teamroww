@@ -85,6 +85,12 @@
                 const videoURL = "https://abgqjfuaaaaaaaamcswtescdjn66h.0eee773031d3434d8c65ff46ac9a6070.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/wn4ivz5ch0/out/v1/ecce90775f6c427b8e7f98eef4157e04/cenc.mpd";
                 await player.load(videoURL);
                 console.log("The video has now been loaded!");
+
+                // Ensure autoplay starts by calling play
+                player.play().catch(function(error) {
+                    console.error('Autoplay failed: ', error);
+                });
+
             } catch (error) {
                 console.error("Error loading video: ", error);
             }
