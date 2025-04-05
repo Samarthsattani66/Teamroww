@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TEAMROHITOFFICAL45_LIVE</title>
+    <title>TEAMROHITOFFICIAL45_LIVE</title>
     <link rel="icon" href="https://i.postimg.cc/prMQRWMR/skfav.png" type="image/png" sizes="250x250">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.1/shaka-player.ui.min.js" crossorigin="anonymous"></script>
@@ -48,19 +48,28 @@
 
     <script>
         async function init() {
+            // Get the video element
             let video = document.getElementById("video");
-            let ui = video.ui;
-            let controls = ui.getControls();
-            let player = controls.getPlayer();
+            
+            // Check if UI is available for the video player
+            if (!shaka.ui) {
+                console.error('Shaka UI library is not loaded correctly');
+                return;
+            }
+
+            // Initialize the Shaka Player and the UI controls
+            const player = new shaka.Player(video);
+            const ui = new shaka.ui.Controls(video, player);
 
             player.configure({
                 drm: {
                     clearKeys: {
-                        "2621df523d47739fdf58ef0ce68f4c27":"98139d5b94e8228bb1bc7e3074013a72"
+                        "2621df523d47739fdf58ef0ce68f4c27": "98139d5b94e8228bb1bc7e3074013a72"
                     }
                 }
             });
 
+            // Configure the player controls UI
             ui.configure({
                 controlPanelElements: ["play_pause", "mute", "volume", "spacer", "time_and_duration", "quality", "fullscreen", "overflow_menu"],
                 volumeBarColors: {
@@ -74,22 +83,20 @@
                 }
             });
 
-            window.player = player;
-            window.ui = ui;
-
+            // Add event listeners for error handling
             player.addEventListener("error", onPlayerErrorEvent);
-            controls.addEventListener("error", onUIErrorEvent);
+            ui.addEventListener("error", onUIErrorEvent);
 
             try {
-                // Correct URL without line break
-                await player.load("https://abgqjfuaaaaaaaamcswtescdjn66h.0eee773031d3434d8c65ff46ac9a6070.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/wn4ivz5ch0/out/v1/ecce90775f6c427b8e7f98eef4157e04/cenc.mpd
-");
+                // Correct URL without line breaks
+                await player.load("https://abgqjfuaaaaaaaamcswtescdjn66h.0eee773031d3434d8c65ff46ac9a6070.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/wn4ivz5ch0/out/v1/ecce90775f6c427b8e7f98eef4157e04/cenc.mpd");
                 console.log("The video has now been loaded!");
             } catch (error) {
                 onPlayerError(error);
             }
         }
 
+        // Error handling function for player errors
         function onPlayerErrorEvent(event) {
             onPlayerError(event.detail);
         }
@@ -106,18 +113,15 @@
             console.error("Unable to load the UI library!");
         }
 
-        function welcome() {
-            window.open("https://t.me/+e6G48oujQuExOTg1");
-        }
-
-        document.addEventListener("shaka-ui-loaded", init);
-        document.addEventListener("shaka-ui-load-failed", initFailed);
-
-        // Telegram prompt
+        // Prompt to join Telegram channel
         const message = "JOIN OUR TELEGRAM CHANNEL FOR MORE LIVE STREAM LINKS";
         if (confirm(message)) {
             window.location.href = "https://t.me/+e6G48oujQuExOTg1";
         }
+
+        // Initialize Shaka Player UI after the library is loaded
+        document.addEventListener("shaka-ui-loaded", init);
+        document.addEventListener("shaka-ui-load-failed", initFailed);
     </script>
 </body>
 </html>
